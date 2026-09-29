@@ -1,10 +1,26 @@
+import { useEffect } from 'react';
+import type { FC } from 'react';
 import { ProfileOrdersUI } from '@ui-pages';
+import { useSelector, useDispatch } from '../../services/store';
+import { fetchUserOrders } from '../../services/slices/feedSlice';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
+import { Preloader } from '@ui';
 
-import type { TOrder } from '@utils-types';
+export const ProfileOrders: FC = () => {
+  const dispatch = useDispatch();
+  const { userOrders, loading } = useSelector((state) => state.feed);
+  const { ingredients } = useSelector((state) => state.ingredients);
 
-export const ProfileOrders = (): React.JSX.Element => {
-  /** TODO: взять переменную из стора */
-  const orders: TOrder[] = [];
+  useEffect(() => {
+    dispatch(fetchUserOrders());
+    if (!ingredients.length) {
+      dispatch(fetchIngredients());
+    }
+  }, [dispatch, ingredients.length]);
 
-  return <ProfileOrdersUI orders={orders} />;
+  if (loading && !userOrders.length) {
+    return <Preloader />;
+  }
+
+  return <ProfileOrdersUI orders={userOrders} />;
 };
