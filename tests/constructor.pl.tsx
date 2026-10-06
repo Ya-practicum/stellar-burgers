@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 const bunName = 'Краторная булка N-200i';
 const mainName = 'Биокотлета из марсианской Магнолии';
 
-test.describe('Burger constructor', () => {
+test.describe('Конструктор бургера', () => {
   test.beforeEach(async ({ page }) => {
     await page.routeFromHAR('tests/hars/constructor.har', {
       url: '**/api/**',
@@ -20,7 +20,7 @@ test.describe('Burger constructor', () => {
     ).toBeVisible();
   });
 
-  test('adds a bun and a filling from the ingredient list', async ({ page }) => {
+  test('добавляет булку и начинку из списка ингредиентов', async ({ page }) => {
     await page
       .getByRole('listitem')
       .filter({ hasText: bunName })
@@ -37,7 +37,7 @@ test.describe('Burger constructor', () => {
     await expect(page.getByTestId('constructor-ingredients')).toContainText(mainName);
   });
 
-  test('opens the selected ingredient details and closes them with the close button', async ({
+  test('открывает детали выбранного ингредиента и закрывает их кнопкой', async ({
     page,
   }) => {
     await page.getByRole('link', { name: new RegExp(bunName) }).click();
@@ -53,7 +53,7 @@ test.describe('Burger constructor', () => {
     await expect(page.getByRole('heading', { name: 'Детали ингредиента' })).toBeHidden();
   });
 
-  test('closes ingredient details when the overlay is clicked', async ({ page }) => {
+  test('закрывает детали ингредиента при клике на оверлей', async ({ page }) => {
     await page.getByRole('link', { name: new RegExp(bunName) }).click();
     await expect(
       page.getByRole('heading', { name: 'Детали ингредиента' })
@@ -63,7 +63,7 @@ test.describe('Burger constructor', () => {
     await expect(page.getByRole('heading', { name: 'Детали ингредиента' })).toBeHidden();
   });
 
-  test('creates an order, clears the constructor and closes the order modal', async ({
+  test('создаёт заказ, очищает конструктор и закрывает окно заказа', async ({
     page,
   }) => {
     await page
